@@ -14,9 +14,9 @@ PUBLIC = ROOT / "public"
 CSS = ROOT / "site" / "style.css"
 
 DISCLAIMER = (
-    "本站是读书笔记，只供教育与自我学习。它不是持牌金融顾问的建议，"
+    "本报告根据公开书籍整理，只供教育与自我学习。它不是持牌金融顾问的建议，"
     "不构成对任何证券、基金或账户的推荐或招揽。投资有亏损本金的可能。"
-    "新加坡 CPF、SRS、交易所产品的规则、费用与资格会变，下单前请核对官方文件。"
+    "新加坡、中国内地与香港的账户规则、费用与资格会变，下单前请核对官方文件。"
 )
 
 
@@ -178,6 +178,67 @@ def build() -> None:
             )
         )
     print(f"built {len(catalog)} books -> {PUBLIC}")
+    write_report()
+
+
+REPORT_TOC_SCRIPT = """<script>
+(function () {
+  var groups = Array.prototype.slice.call(document.querySelectorAll(".toc-group"));
+  var items = [];
+  groups.forEach(function (group) {
+    Array.prototype.forEach.call(group.querySelectorAll("a"), function (a) {
+      var id = a.getAttribute("href");
+      var el = id ? document.querySelector(id) : null;
+      if (el) items.push({ a: a, el: el, group: group });
+    });
+  });
+  if (!items.length) return;
+  function update() {
+    var y = window.scrollY + 96;
+    var current = items[0];
+    items.forEach(function (item) {
+      var top = item.el.getBoundingClientRect().top + window.scrollY;
+      if (top <= y) current = item;
+    });
+    items.forEach(function (item) {
+      if (item === current) item.a.setAttribute("aria-current", "true");
+      else item.a.removeAttribute("aria-current");
+    });
+    groups.forEach(function (group) {
+      if (group === current.group) group.classList.add("is-open");
+      else group.classList.remove("is-open");
+    });
+  }
+  update();
+  window.addEventListener("scroll", update, { passive: true });
+})();
+</script>"""
+
+
+def write_report() -> None:
+    """Add the standalone report without replacing the book pages."""
+    shutil.copy(ROOT / "site" / "report.css", PUBLIC / "assets" / "report.css")
+    body = (CONTENT / "report.html").read_text()
+    page = layout(
+        title="最终财富自由",
+        description="一份可以单独阅读的财富自由报告：先给结论，再写出来源和做法。不是投资建议。",
+        body=body,
+        depth=0,
+        current="report",
+    )
+    page = page.replace(
+        '<link rel="stylesheet" href="assets/style.css">',
+        '<link rel="stylesheet" href="assets/style.css">\n'
+        '<link rel="stylesheet" href="assets/report.css">',
+        1,
+    )
+    page = page.replace(
+        f"{html.escape(DISCLAIMER)}</p>",
+        f"{html.escape(DISCLAIMER)} 附录中的内地与香港工具同样只以当时的官方页面为准。</p>",
+        1,
+    )
+    page = re.sub(r"<script>.*?</script>", REPORT_TOC_SCRIPT, page, count=1, flags=re.S)
+    (PUBLIC / "report.html").write_text(page)
 
 
 if __name__ == "__main__":
