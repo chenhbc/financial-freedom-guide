@@ -38,6 +38,7 @@ def layout(*, title: str, description: str, body: str, depth: int, current: str)
         return f'<a href="{href}"{cur}>{label}</a>'
 
     minutes = reading_minutes(body)
+    body_class = {"home": "page-home", "synthesis": "page-synthesis"}.get(current, "page-book")
     return f"""<!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
@@ -45,13 +46,16 @@ def layout(*, title: str, description: str, body: str, depth: int, current: str)
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(description)}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="{css}">
 </head>
-<body>
+<body class="{body_class}">
 <a class="skip" href="#main">跳到正文</a>
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="{home}">十五本书的投资笔记<small>FINANCIAL FREEDOM NOTES</small></a>
+    <a class="brand" href="{home}">十五本书的投资笔记</a>
     <nav class="nav" aria-label="主导航">
       {nav(home, "书目", "home")}
       {nav(syn, "综合与行动", "synthesis")}
@@ -59,8 +63,16 @@ def layout(*, title: str, description: str, body: str, depth: int, current: str)
   </div>
 </header>
 <main id="main" class="wrap">
+<div class="margin-curve" aria-hidden="true">
+  <svg class="curve-rise" viewBox="0 0 140 360" fill="none">
+    <path d="M16 336 C 24 280, 30 220, 46 158 C 64 88, 90 42, 124 22" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+  </svg>
+  <svg class="curve-mark" viewBox="0 0 220 70" fill="none">
+    <path d="M6 58 C 46 58, 76 52, 108 40 C 146 24, 174 12, 212 8" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+  </svg>
+</div>
 {body}
-<p class="meta" style="margin-top:28px">阅读时间约 {minutes} 分钟 · 页码指来源仓库 PDF 的文件页，含封面，不同纸书页码不会一一对应。</p>
+<p class="meta colophon">阅读时间约 {minutes} 分钟 · 页码指来源仓库 PDF 的文件页，含封面，不同纸书页码不会一一对应。</p>
 </main>
 <footer class="site">
   <div class="wrap">
@@ -79,6 +91,12 @@ def build() -> None:
     (PUBLIC / "assets").mkdir(parents=True)
     (PUBLIC / "books").mkdir()
     shutil.copy(CSS, PUBLIC / "assets" / "style.css")
+    font_src = ROOT / "site" / "fonts"
+    font_dst = PUBLIC / "assets" / "fonts"
+    font_dst.mkdir(parents=True)
+    for font in font_src.iterdir():
+        if font.suffix in {".woff2", ".txt"}:
+            shutil.copy(font, font_dst / font.name)
 
     catalog = json.loads((ROOT / "site" / "catalog.json").read_text())
     home_extra = (CONTENT / "home.html").read_text()
@@ -95,9 +113,11 @@ def build() -> None:
             card_html.append(
                 f"""<a class="card" href="books/{item['slug']}.html">
   <div class="idx">{html.escape(item['index'])}</div>
-  <h3>{html.escape(item['title'])}</h3>
-  <p>{html.escape(item['blurb'])}</p>
-  <div class="foot">{html.escape(item['author'])} · 约 {minutes} 分钟</div>
+  <div class="card-body">
+    <h3>{html.escape(item['title'])}</h3>
+    <p>{html.escape(item['blurb'])}</p>
+    <p class="foot"><span>{html.escape(item['author'])}</span><span>约 {minutes} 分钟</span></p>
+  </div>
 </a>"""
             )
         card_html.append("</div>")
