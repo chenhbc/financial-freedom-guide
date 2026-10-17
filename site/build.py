@@ -64,10 +64,10 @@ def layout(*, title: str, description: str, body: str, depth: int, current: str)
 </header>
 <main id="main" class="wrap">
 <div class="margin-curve" aria-hidden="true">
-  <svg class="curve-rise" viewBox="0 0 140 360" fill="none">
+  <svg class="curve-rise" viewBox="0 0 140 360" width="109" height="432" fill="none">
     <path d="M16 336 C 24 280, 30 220, 46 158 C 64 88, 90 42, 124 22" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
   </svg>
-  <svg class="curve-mark" viewBox="0 0 220 70" fill="none">
+  <svg class="curve-mark" viewBox="0 0 220 70" width="144" height="44" fill="none">
     <path d="M6 58 C 46 58, 76 52, 108 40 C 146 24, 174 12, 212 8" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
   </svg>
 </div>

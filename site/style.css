@@ -122,16 +122,25 @@ a:hover { color: var(--ink); }
 .wrap { padding: 2.1rem 0 4.75rem; }
 
 .margin-curve { color: var(--pine); pointer-events: none; }
-.margin-curve svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.curve-rise, .curve-mark { display: none; }
-
 .page-home main { position: relative; }
-.page-home .curve-mark,
-.page-book .curve-mark,
-.page-synthesis .curve-mark {
-  display: block;
+
+/* Beat the global `svg { height: auto }`. Percentage height on the tall
+   viewBox was stretching it to the viewport and pushing the text down. */
+.margin-curve .curve-rise,
+.margin-curve .curve-mark {
+  display: none;
+  overflow: visible;
+}
+.margin-curve .curve-mark {
   width: 9rem;
   height: 2.75rem;
+  max-width: 9rem;
+  max-height: 2.75rem;
+}
+.page-home .margin-curve .curve-mark,
+.page-book .margin-curve .curve-mark,
+.page-synthesis .margin-curve .curve-mark {
+  display: block;
   margin: 0 0 0.85rem;
 }
 
@@ -495,14 +504,16 @@ footer.site a { color: var(--pine); }
     margin-left: max(8.5rem, calc(50vw - 26rem));
     margin-right: auto;
   }
-  .page-home .curve-mark { display: none; }
-  .page-home .curve-rise {
+  .page-home .margin-curve .curve-mark { display: none; }
+  .page-home .margin-curve .curve-rise {
     display: block;
     position: absolute;
     left: -7.6rem;
     top: 0.15rem;
     width: 6.8rem;
     height: 27rem;
+    max-width: 6.8rem;
+    max-height: 27rem;
   }
 }
 
