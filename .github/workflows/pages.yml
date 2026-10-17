@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check build
+        run: python3 -m unittest tests/test_build.py
+
       - name: Build static site
         run: python3 site/build.py
 

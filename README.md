@@ -7,11 +7,12 @@
 ## 本地预览
 
 ```bash
+python3 -m unittest tests/test_build.py
 python3 site/build.py
 python3 -m http.server 8765 -d public
 ```
 
-浏览器打开 `http://127.0.0.1:8765/`。
+浏览器打开 `http://127.0.0.1:8765/`。测试会重新构建，并检查每本书的页面、站内链接、免责声明，以及图里出现的数字是否都在正文里。
 
 ## 页面
 
