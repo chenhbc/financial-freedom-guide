@@ -440,9 +440,9 @@ blockquote.quote cite {
   content: "";
   position: absolute;
   left: 0;
-  top: calc(0.75rem + 0.875em - 0.75px); /* centre of first text line; 0.875 = half of line-height 1.75 */
-  width: 0.5rem;
-  height: 1.5px;
+  top: 26px;
+  width: 8px;
+  height: 2px;
   background: var(--pine); /* #1B463C */
   border: 0;
 }
@@ -616,4 +616,5 @@ footer.site a { color: var(--pine); }
   h1 { font-size: 1.85rem; }
   blockquote.quote { font-size: 1.14rem; }
   table.data { display: block; overflow-x: auto; }
+  .checklist li::before { top: 25px; }
 }
