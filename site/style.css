@@ -44,10 +44,11 @@ body {
   margin: 0;
   color: var(--ink);
   background: var(--mist);
-  font-family: var(--kai);
-  font-size: 1.125rem;
+  font-family: var(--sans);
+  font-size: 17px;
   font-weight: 400;
-  line-height: 1.9;
+  line-height: 1.8;
+  font-variant-numeric: tabular-nums lining-nums;
   text-rendering: optimizeLegibility;
   line-break: strict;
 }
@@ -122,47 +123,62 @@ a:hover { color: var(--ink); }
 .wrap { padding: 2.1rem 0 4.75rem; }
 
 .margin-curve { color: var(--pine); pointer-events: none; }
-.page-home main { position: relative; }
-
-/* Beat the global `svg { height: auto }`. Percentage height on the tall
-   viewBox was stretching it to the viewport and pushing the text down. */
-.margin-curve .curve-rise,
 .margin-curve .curve-mark {
+  display: none;
+  width: 4.5rem;
+  height: 1.25rem;
+  max-width: 4.5rem;
+  max-height: 1.25rem;
+  overflow: visible;
+}
+.margin-curve .curve-mark path { vector-effect: non-scaling-stroke; }
+.page-home .margin-curve .curve-mark {
+  display: block;
+  margin: 0 0 0.5rem;
+}
+.hero-copy { position: relative; }
+.hero-copy .curve-rise {
   display: none;
   overflow: visible;
 }
-.margin-curve .curve-mark {
-  width: 9rem;
-  height: 2.75rem;
-  max-width: 9rem;
-  max-height: 2.75rem;
+.hero-copy .curve-rise,
+.hero-copy .curve-rise line,
+.hero-copy .curve-rise .compound {
+  vector-effect: non-scaling-stroke;
 }
-.page-home .margin-curve .curve-mark,
-.page-book .margin-curve .curve-mark,
-.page-synthesis .margin-curve .curve-mark {
-  display: block;
-  margin: 0 0 0.85rem;
+.hero-copy .curve-rise .compound {
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: draw-curve 1.2s ease-out forwards;
 }
 
-.curve-rise path {
-  stroke-dasharray: 800;
-  stroke-dashoffset: 800;
-  animation: draw-curve 1.5s ease-out forwards;
-}
-
-h1, h2, h3 {
+h1, h2 {
   font-family: var(--kai);
   font-weight: 700;
   line-height: 1.32;
   color: var(--ink);
 }
+h3 {
+  font-family: var(--sans);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
 h1 {
   font-size: clamp(2.05rem, 4.6vw, 2.85rem);
   margin: 0 0 0.7rem;
-  max-width: 12em;
+  max-width: 16em;
+  text-wrap: balance;
 }
 h2 { font-size: 1.55rem; margin: 2.4rem 0 0.55rem; max-width: 20em; }
 h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
+.edition {
+  margin: 0 0 0.35rem;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.4;
+  color: #3E524C;
+}
 
 .kicker {
   margin: 0 0 0.45rem;
@@ -175,6 +191,7 @@ h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
   color: var(--pine);
 }
 .lede {
+  font-family: var(--kai);
   font-size: 1.16rem;
   line-height: 1.85;
   color: var(--ink);
@@ -206,24 +223,30 @@ h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
   line-height: 1.8;
   color: var(--ink);
 }
-.hero-aside strong { color: var(--ink); font-weight: 700; }
-.statrow { display: flex; gap: 2rem; margin-top: 0.35rem; }
+.hero-aside strong { color: var(--ink); font-weight: 600; }
+.statrow {
+  display: flex;
+  gap: 3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 .statrow div { flex: none; max-width: 14rem; }
 .statrow b {
   display: block;
   font-family: var(--kai);
   font-weight: 700;
-  font-size: 1.85rem;
+  font-size: 32px;
   line-height: 1.2;
-  color: var(--pine);
+  color: #1B463C;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 .statrow span {
   display: block;
   margin-top: 0.2rem;
   font-family: var(--sans);
-  font-size: 0.8rem;
-  line-height: 1.45;
-  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+  color: #3E524C;
 }
 
 .notice {
@@ -237,7 +260,7 @@ h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
   line-height: 1.75;
   color: var(--ink);
 }
-.notice strong { color: var(--ink); font-weight: 700; }
+.notice strong { color: var(--ink); font-weight: 600; }
 
 .toc {
   display: block;
@@ -248,13 +271,32 @@ h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
 }
 .toc li { border-bottom: 1px solid var(--line); }
 .toc a {
-  display: block;
-  padding: 0.62rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.62rem 0.5rem;
   text-decoration: none;
   color: var(--ink);
-  font-family: var(--kai);
+  font-family: var(--sans);
 }
-.toc a:hover { color: var(--pine); }
+.toc a::after {
+  content: "→";
+  flex: none;
+  font-size: 14px;
+  color: #3E524C;
+  transition: transform 150ms ease, color 150ms ease;
+}
+.toc a:hover,
+.toc a:focus-visible {
+  background: #D5E2DC;
+  color: var(--ink);
+}
+.toc a:hover::after,
+.toc a:focus-visible::after {
+  color: #1B463C;
+  transform: translateX(2px);
+}
 
 .group-label {
   margin: 2.5rem 0 0.15rem;
@@ -281,8 +323,9 @@ h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
   color: inherit;
 }
 .card .idx {
-  font-family: var(--kai);
-  font-weight: 700;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
   color: var(--pine);
   font-size: 1rem;
   letter-spacing: 0;
@@ -324,8 +367,9 @@ h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
   color: var(--muted);
 }
 .chips li:not(:last-child)::after {
-  content: " / ";
-  color: var(--line);
+  content: "/";
+  padding: 0 0.5em;
+  color: #C5D4CE;
 }
 
 .onpage {
@@ -339,13 +383,27 @@ h3 { font-size: 1.18rem; margin: 1.5rem 0 0.35rem; }
   font-family: var(--sans);
   font-size: 0.88rem;
 }
-.onpage a { text-decoration: none; }
+.onpage a {
+  color: #1B463C;
+  text-decoration: none;
+  font-weight: 400;
+}
+.onpage a:hover,
+.onpage a:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+.onpage a[aria-current="true"] {
+  font-weight: 600;
+  color: #1B463C;
+}
 
 .prose { max-width: var(--measure); }
 .prose p { margin: 0.85em 0; }
 .prose ul, .prose ol { padding-left: 1.2em; }
 .prose li { margin: 0.35em 0; }
-.prose strong, .checklist strong, .steps strong { font-weight: 700; }
+.prose strong, .checklist strong, .steps strong, .notice strong { font-weight: 600; }
 
 blockquote.quote {
   margin: 1.35rem 0;
@@ -482,8 +540,8 @@ footer.site a { color: var(--pine); }
   border-radius: 0;
   background: var(--mist);
   color: var(--pine);
-  font-family: var(--kai);
-  font-weight: 700;
+  font-family: var(--sans);
+  font-weight: 600;
   font-size: 1rem;
   line-height: 1.7rem;
   text-align: center;
@@ -495,33 +553,63 @@ footer.site a { color: var(--pine); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .curve-rise path { animation: none; stroke-dashoffset: 0; }
+  .curve-rise .compound { animation: none; stroke-dashoffset: 0; }
 }
 
 @media (min-width: 1100px) {
   .topbar-inner,
   .wrap {
-    margin-left: max(8.5rem, calc(50vw - 26rem));
+    width: 38rem;
+    margin-left: calc(50vw - 19rem);
     margin-right: auto;
   }
   .page-home .margin-curve .curve-mark { display: none; }
-  .page-home .margin-curve .curve-rise {
+  .hero-copy .curve-rise {
     display: block;
     position: absolute;
     left: -7.6rem;
-    top: 0.15rem;
+    top: 0;
     width: 6.8rem;
-    height: 27rem;
+    height: 100%;
     max-width: 6.8rem;
-    max-height: 27rem;
+    max-height: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .onpage {
+    position: fixed;
+    top: 5rem;
+    left: calc(50vw + 19rem + 1.5rem);
+    width: 10rem;
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    font-size: 13px;
+    max-width: none;
+    z-index: 5;
+  }
+  .onpage a[aria-current="true"] {
+    border-left: 2px solid #1B463C;
+    padding-left: 0.55rem;
   }
 }
 
 @media (max-width: 800px) {
   :root { --pad: 1.05rem; }
-  body { font-size: 1.05rem; line-height: 1.85; }
-  .topbar-inner { flex-wrap: wrap; align-items: flex-start; }
-  .nav { width: 100%; gap: 1rem; }
+  body { font-size: 16px; line-height: 1.8; }
+  .topbar-inner {
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 0.7rem 0;
+  }
+  .brand { font-size: 16px; }
+  .nav { width: auto; gap: 1rem; }
+  .nav a { font-size: 14px; }
   .two { grid-template-columns: 1fr; }
   h1 { font-size: 1.85rem; }
   blockquote.quote { font-size: 1.14rem; }

@@ -64,11 +64,8 @@ def layout(*, title: str, description: str, body: str, depth: int, current: str)
 </header>
 <main id="main" class="wrap">
 <div class="margin-curve" aria-hidden="true">
-  <svg class="curve-rise" viewBox="0 0 140 360" width="109" height="432" fill="none">
-    <path d="M16 336 C 24 280, 30 220, 46 158 C 64 88, 90 42, 124 22" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-  </svg>
-  <svg class="curve-mark" viewBox="0 0 220 70" width="144" height="44" fill="none">
-    <path d="M6 58 C 46 58, 76 52, 108 40 C 146 24, 174 12, 212 8" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
+  <svg class="curve-mark" viewBox="0 0 220 70" width="72" height="20" fill="none">
+    <path d="M6 58 C 46 58, 76 52, 108 40 C 146 24, 174 12, 212 8" stroke="#1B463C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
   </svg>
 </div>
 {body}
@@ -80,6 +77,30 @@ def layout(*, title: str, description: str, body: str, depth: int, current: str)
     <p>书目来源：<a href="https://github.com/codeman008/Financial_freedom">codeman008/Financial_freedom</a>。本站不转载 PDF，也不做长篇原文摘录。</p>
   </div>
 </footer>
+<script>
+(function () {{
+  var links = Array.prototype.slice.call(document.querySelectorAll(".onpage a"));
+  if (!links.length) return;
+  var items = links.map(function (a) {{
+    var id = a.getAttribute("href");
+    return {{ a: a, el: id ? document.querySelector(id) : null }};
+  }}).filter(function (item) {{ return item.el; }});
+  if (!items.length) return;
+  function update() {{
+    var y = window.scrollY + 96;
+    var current = items[0];
+    items.forEach(function (item) {{
+      if (item.el.offsetTop <= y) current = item;
+    }});
+    items.forEach(function (item) {{
+      if (item === current) item.a.setAttribute("aria-current", "true");
+      else item.a.removeAttribute("aria-current");
+    }});
+  }}
+  update();
+  window.addEventListener("scroll", update, {{ passive: true }});
+}})();
+</script>
 </body>
 </html>
 """
