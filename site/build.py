@@ -64,8 +64,9 @@ def layout(*, title: str, description: str, body: str, depth: int, current: str)
 </header>
 <main id="main" class="wrap">
 <div class="margin-curve" aria-hidden="true">
-  <svg class="curve-mark" viewBox="0 0 220 70" width="72" height="20" fill="none">
-    <path d="M6 58 C 46 58, 76 52, 108 40 C 146 24, 174 12, 212 8" stroke="#1B463C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <svg class="curve-mark" viewBox="0 0 72 20" width="72" height="20" fill="none">
+    <line x1="1" y1="17.5" x2="70" y2="17.5" stroke="#C5D4CE" stroke-width="1"/>
+    <path d="M2 16.2 C 16 16.2, 30 16, 43 14.6 C 52 12.4, 60 7.2, 70 2.2" stroke="#1B463C" stroke-width="1.5" stroke-linecap="round" fill="none"/>
   </svg>
 </div>
 {body}
