@@ -1,6 +1,6 @@
-# 十五本书的投资笔记
+# 最终财富自由
 
-根据公开仓库 [codeman008/Financial_freedom](https://github.com/codeman008/Financial_freedom) 中的 PDF 整理的简体中文静态网站。笔记讨论个人理财与投资原则，**不是**持牌金融建议。
+根据公开仓库 [codeman008/Financial_freedom](https://github.com/codeman008/Financial_freedom) 中的 PDF 整理的一份简体中文报告。讨论个人理财与投资原则，**不是**持牌金融建议。
 
 本仓库不收录、也不转载那些 PDF。
 
@@ -15,10 +15,8 @@ python3 -m http.server 8765 -d public
 
 ## 页面
 
-- `public/index.html`：十五本书的入口
-- `public/books/`：分书笔记
-- `public/synthesis.html`：共同原则、分歧和行动顺序
-- `public/report.html`：可以单独阅读的《最终财富自由》
+- `public/index.html`：《最终财富自由》
+- `public/report.html`：转到首页
 
 ## 部署
 
