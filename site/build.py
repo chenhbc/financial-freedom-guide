@@ -34,7 +34,7 @@ def layout(body: str) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>最终财富自由</title>
+<title>财富自由，第一步不是买股票｜最终财富自由</title>
 <meta name="description" content="一份可以单独阅读的财富自由报告：先给结论，再写出来源和做法。不是投资建议。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
