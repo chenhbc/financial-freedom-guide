@@ -431,21 +431,20 @@ blockquote.quote cite {
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--line);
-  padding: 0.75rem 0 0.75rem 1.45rem;
+  padding: 0.75rem 0 0.75rem 1.25rem;
   margin: 0;
   position: relative;
   line-height: 1.75;
 }
 .checklist li::before {
   content: "";
-  width: 0.48rem;
-  height: 0.48rem;
-  border: 1.5px solid var(--pine);
-  border-radius: 0;
-  background: transparent;
   position: absolute;
-  left: 0.1rem;
-  top: 1.05rem;
+  left: 0;
+  top: calc(0.75rem + 0.875em - 0.75px); /* centre of first text line; 0.875 = half of line-height 1.75 */
+  width: 0.5rem;
+  height: 1.5px;
+  background: var(--pine); /* #1B463C */
+  border: 0;
 }
 
 .figure {
