@@ -184,7 +184,7 @@ table.data td.num { text-align: right; }
 
 .hero { margin: 0; padding: 0; }
 
-.kicker { font: 500 13px/1.5 var(--sans); color: var(--pine); margin: 0 0 12px; }
+.kicker { font: 500 13px/1.5 var(--sans); font-weight: 500; color: #1B463C; margin: 0 0 12px; }
 .kicker .seg { white-space: nowrap; }
 
 .hero h1 {
