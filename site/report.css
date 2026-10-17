@@ -1,0 +1,159 @@
+/* Rules used only by the standalone report. The book pages keep site/style.css. */
+
+h4 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.45;
+  margin: 1.15rem 0 0.2rem;
+  color: var(--ink);
+}
+
+.onpage {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.45rem;
+}
+.toc-group { display: flex; flex-direction: column; gap: 0.15rem; }
+.toc-sub { display: none; flex-direction: column; gap: 0.1rem; }
+.toc-group.is-open .toc-sub { display: flex; }
+.onpage .toc-sub a {
+  padding-left: 0.75rem;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+ol.conclusions {
+  list-style: none;
+  padding: 0;
+  margin: 0.4rem 0 0;
+  max-width: var(--measure);
+  counter-reset: conclusion;
+}
+ol.conclusions > li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem 0;
+  margin: 0;
+}
+ol.conclusions > li:last-child { border-bottom: none; }
+ol.conclusions > li::before {
+  counter-increment: conclusion;
+  content: counter(conclusion, decimal-leading-zero);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: var(--pine);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+ol.conclusions strong { font-weight: 600; }
+
+.remember {
+  max-width: var(--measure);
+  margin: 1.35rem 0 0;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--pine);
+  border-bottom: 1px solid var(--pine);
+}
+.remember-label {
+  margin: 0 0 0.5rem;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.remember p:last-child {
+  margin: 0;
+  font-family: var(--kai);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--pine);
+}
+
+strong { font-weight: 600; }
+
+.extract {
+  list-style: none;
+  padding: 0;
+  margin: 0.2rem 0 0;
+  max-width: var(--measure);
+}
+.extract > li {
+  border-bottom: 1px solid var(--line);
+  padding: 0.7rem 0;
+  line-height: 1.75;
+}
+.extract .src,
+.notes {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.extract .src { display: block; margin-top: 0.28rem; }
+
+.fn {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 0;
+  position: relative;
+  top: -0.15em;
+  margin-left: 0.1em;
+}
+.fn a {
+  color: var(--pine);
+  text-decoration: none;
+  padding: 0 0.2em 0 0;
+  position: relative;
+}
+.fn a::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+}
+.fn a:hover,
+.fn a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.notes {
+  padding-left: 1.2rem;
+  margin: 0.4rem 0 0;
+  max-width: var(--measure);
+}
+.notes li { margin: 0.4rem 0; }
+.notes li::marker { color: var(--pine); }
+
+table.data th.num,
+table.data td.num { text-align: right; }
+
+@media (min-width: 1200px) {
+  .onpage > .toc-group > a[aria-current="true"] {
+    border-left: 2px solid var(--pine);
+    padding-left: 0.55rem;
+    font-weight: 600;
+    color: var(--pine);
+  }
+  .onpage .toc-sub a[aria-current="true"] {
+    border-left: 2px solid var(--pine);
+    padding-left: calc(0.75rem - 2px);
+    font-weight: 600;
+    color: var(--pine);
+  }
+}

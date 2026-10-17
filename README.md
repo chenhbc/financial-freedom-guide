@@ -18,6 +18,7 @@ python3 -m http.server 8765 -d public
 - `public/index.html`：十五本书的入口
 - `public/books/`：分书笔记
 - `public/synthesis.html`：共同原则、分歧和行动顺序
+- `public/report.html`：可以单独阅读的《最终财富自由》
 
 ## 部署
 
