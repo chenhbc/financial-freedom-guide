@@ -237,7 +237,11 @@ def write_report() -> None:
         f"{html.escape(DISCLAIMER)} 附录中的内地与香港工具同样只以当时的官方页面为准。</p>",
         1,
     )
-    page = re.sub(r"<script>.*?</script>", REPORT_TOC_SCRIPT, page, count=1, flags=re.S)
+    page, replaced = re.subn(
+        r"<script>.*?</script>", REPORT_TOC_SCRIPT, page, count=1, flags=re.S
+    )
+    if not replaced:
+        page = page.replace("</body>", REPORT_TOC_SCRIPT + "\n</body>", 1)
     (PUBLIC / "report.html").write_text(page)
 
 
