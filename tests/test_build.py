@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import importlib.util
+import re
 import shutil
 import subprocess
 import sys
@@ -104,8 +105,8 @@ class BuildTests(unittest.TestCase):
 
     def test_subset_covers_kai_characters_only(self):
         chars = self.build.kai_characters(self.html)
-        self.assertEqual(len(chars[400]), 67)
-        self.assertEqual(len(chars[700]), 41)
+        self.assertEqual(len(chars[400]), 39)
+        self.assertEqual(len(chars[700]), 43)
         for weight, name in ((400, "wenkai-regular.woff2"), (700, "wenkai-medium.woff2")):
             path = self.public / "assets" / "fonts" / name
             self.assertEqual(path.read_bytes()[:4], b"wOF2")
@@ -161,7 +162,45 @@ class BuildTests(unittest.TestCase):
             "本站不转载 PDF，也不做长篇原文摘录。",
             self.html,
         )
-        self.assertIn("页码指来源仓库 PDF 的文件页，含封面，不同纸书页码不会一一对应。", self.html)
+        self.assertIn(
+            '<p class="meta colophon">页码指来源仓库 PDF 的文件页，含封面，不同纸书页码不会一一对应。</p>',
+            self.html,
+        )
+        self.assertNotIn("阅读时间约", self.html)
+        self.assertIn("全文约 18 分钟。", self.html)
+
+    def test_alpha_text(self):
+        self.assertIn(
+            "核心提取标到原书章节，历史数字标到 PDF 页码 · 不推荐任何产品",
+            re.sub(r"<[^>]+>", "", self.html),
+        )
+        self.assertNotIn("最终财富自由 · 报告", self.html)
+        self.assertIn('<h2 id="action">二、原则与做法</h2>', self.html)
+        self.assertIn('<h3 id="findings">原则</h3>', self.html)
+        self.assertIn('<a href="#findings">原则</a>', self.html)
+        self.assertIn('<h2 id="gist">先看结论</h2>', self.html)
+        self.assertNotIn("先记住这一句", self.html)
+        self.assertNotIn("要拿走的一句", self.html)
+        self.assertNotIn('class="remember"', self.html)
+        self.assertNotIn('class="callout"', self.html)
+        self.assertNotIn("<h3>注意</h3>", self.html)
+        self.assertIn('<p class="meta">这里不排阅读顺序，也不把两本书写成对错。</p>', self.html)
+        self.assertNotIn("每条只留一个想法", self.html)
+        self.assertNotIn("下列书名只为对照页注", self.html)
+        self.assertIn("金额空着。完成前面的步骤之前，不要跳到后面更像投资的动作。", self.html)
+        self.assertIn("下表是美国一段很长历史的描述，不是预测，也不是你所在市场的预期。", self.html)
+        self.assertIn("<p>别处写下的估值分界不能换一个交易所继续用。</p>", self.html)
+        self.assertIn(
+            "<p>书中 2017 年前后的盈利收益率分界，绑的是当时的债券基金平均收益和当时的国债收益率，不能当作今天的阈值。"
+            '<sup class="fn"><a href="#n6">6</a></sup></p>',
+            self.html,
+        )
+        self.assertIn("<p>强积金里的基金选择不是对某只港交所基金的推荐。</p>", self.html)
+        self.assertIn("<h4>账户与工具</h4>", self.html)
+        self.assertIn("<h4>对应到通用步骤</h4>", self.html)
+        self.assertNotIn("规则、费用和资格会变。", self.html)
+        self.assertNotIn("不在这里写缴费比例", self.html)
+        self.assertNotIn("不在这里写供款比率", self.html)
 
     def test_dead_selectors_are_gone(self):
         for token in (
@@ -182,8 +221,10 @@ class BuildTests(unittest.TestCase):
             ".toc li",
         ):
             self.assertNotIn(token, self.css, token)
-        for token in (".toc-group", ".toc-sub", ".onpage", ".extract", ".checklist", ".remember"):
+        for token in (".toc-group", ".toc-sub", ".onpage", ".extract", ".checklist"):
             self.assertIn(token, self.css, token)
+        self.assertNotIn(".remember", self.css)
+        self.assertNotIn(".callout", self.css)
 
     def test_no_pdf_added(self):
         pdfs = [path for path in ROOT.rglob("*.pdf") if ".git" not in path.parts]

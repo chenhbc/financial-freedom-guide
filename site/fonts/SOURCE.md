@@ -11,7 +11,7 @@ Titles, the brand, and quotations use [LXGW WenKai](https://github.com/lxgw/Lxgw
 
 The two woff2 files in this directory are the pinned build inputs. They are the v1.522 faces previously cut to 1,048 glyphs. `site/build.py` does not ship them as-is. It subsets them again, at build time, with [fontTools](https://github.com/fonttools/fonttools) (`fontTools.subset`, the `pyftsubset` tool; MIT license) to the characters that page actually draws in this face:
 
-- weight 400: quotation paragraphs (`.quote p`, `.epigraph p`) and the sentence in `.remember`
+- weight 400: quotation paragraphs (`.quote p`, `.epigraph p`)
 - weight 700: `h1`, `h2`, and `.brand`
 
 `brotli` (MIT) compresses the subset to woff2. `@font-face` uses `font-display: swap`. The built site copies `OFL.txt` to `public/assets/fonts/` beside the subset files. The upstream additional permission allows a web-only woff2 subset that keeps the reserved font name.

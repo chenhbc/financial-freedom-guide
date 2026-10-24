@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import hashlib
 import html
-import re
 import shutil
 from html.parser import HTMLParser
 from pathlib import Path
@@ -115,30 +114,20 @@ def _has_ancestor(el: _El, class_name: str) -> bool:
     return False
 
 
-def _is_last_element_child(el: _El) -> bool:
-    parent = el.parent
-    if parent is None:
-        return False
-    elements = [child for child in parent.children if isinstance(child, _El)]
-    return bool(elements) and elements[-1] is el
-
-
 def _font_spec(el: _El) -> tuple[str, int] | None:
     """Font set directly on this element.
 
-    WenKai is used for the brand, headings, the hero and epigraph quotations,
-    and the sentence inside .remember. Citations and the remember label stay
-    on the sans stack. Weight 700 is the Medium file; weight 400 is Regular.
+    WenKai is used for the brand, headings, and the hero and epigraph
+    quotations. Citations stay on the sans stack. Weight 700 is the Medium
+    file; weight 400 is Regular.
     """
-    if el.tag == "cite" or "remember-label" in el.classes:
+    if el.tag == "cite":
         return ("sans", 400)
     if el.tag in {"h1", "h2"} or "brand" in el.classes:
         return ("kai", 700)
     if el.tag == "p" and _has_ancestor(el, "quote"):
         return ("kai", 400)
     if el.tag == "p" and _has_ancestor(el, "epigraph"):
-        return ("kai", 400)
-    if el.tag == "p" and _has_ancestor(el, "remember") and _is_last_element_child(el):
         return ("kai", 400)
     if el.tag == "blockquote" and "quote" in el.classes:
         return ("kai", 400)
@@ -184,14 +173,7 @@ def _unique(chunks: list[str]) -> str:
     return "".join(chars)
 
 
-def reading_minutes(body: str) -> int:
-    text = re.sub(r"<[^>]+>", "", body)
-    text = re.sub(r"\s+", "", text)
-    return max(4, round(len(text) / 450))
-
-
 def layout(body: str) -> str:
-    minutes = reading_minutes(body)
     return f"""<!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
@@ -217,7 +199,7 @@ def layout(body: str) -> str:
 </header>
 <main id="main" class="wrap">
 {body}
-<p class="meta colophon">阅读时间约 {minutes} 分钟 · 页码指来源仓库 PDF 的文件页，含封面，不同纸书页码不会一一对应。</p>
+<p class="meta colophon">页码指来源仓库 PDF 的文件页，含封面，不同纸书页码不会一一对应。</p>
 </main>
 <footer class="site">
   <div class="wrap">
