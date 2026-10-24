@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import importlib.util
+import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -132,6 +134,19 @@ class BuildTests(unittest.TestCase):
         self.assertGreater(total, 8_000)
         for weight, sentinel in ((400, "投资者"), (400, "睡觉"), (700, "页注"), (700, "最终")):
             self.assertTrue(all(ch in chars[weight] for ch in sentinel), sentinel)
+
+    def test_subset_is_deterministic(self):
+        page = self.build.layout((ROOT / "content" / "report.html").read_text())
+        first = Path(tempfile.mkdtemp())
+        second = Path(tempfile.mkdtemp())
+        try:
+            self.build.subset_wenkai(page, first)
+            self.build.subset_wenkai(page, second)
+            for name in ("wenkai-regular.woff2", "wenkai-medium.woff2"):
+                self.assertEqual((first / name).read_bytes(), (second / name).read_bytes(), name)
+        finally:
+            shutil.rmtree(first)
+            shutil.rmtree(second)
 
     def test_source_font_pin_unchanged(self):
         for meta in self.build.WENKAI_SOURCES.values():

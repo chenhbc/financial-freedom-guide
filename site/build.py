@@ -339,6 +339,9 @@ def _subset_font(src: Path, dest: Path, text: str) -> None:
     subsetter.populate(text=text)
     subsetter.subset(font)
     font.flavor = "woff2"
+    # The source timestamp is part of the pinned font. Do not stamp "now",
+    # or every build would emit a different woff2.
+    font.recalcTimestamp = False
     font.save(dest)
 
 
