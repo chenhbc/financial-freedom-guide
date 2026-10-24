@@ -635,7 +635,7 @@ table.data td.num { text-align: right; }
 
 .verdicts strong { font-weight: 600; }
 
-.cred .nw, .hook-text .nw { white-space: nowrap; }
+.cred .nw, .hook-text .nw, .quote .nw { white-space: nowrap; }
 
 @media (max-width: 719px) {
   .wrap { padding-top: 24px; }
@@ -673,4 +673,24 @@ table.data td.num { text-align: right; }
 
 @media (max-width: 1199px) {
   .onpage { display: none; }
+}
+
+/* WenKai 「 (U+300C) draws its ink 724/1000 em in. Below 768px, pad the
+   wrapped lines and the attribution by that bearing and pull the first
+   line back, so they share the quote mark's left edge. */
+@media (max-width: 767px) {
+  .hero .quote p {
+    padding-left: 0.724em;
+    text-indent: -0.724em;
+  }
+
+  .hero .quote cite {
+    padding-left: calc(0.724 * 20px);
+  }
+}
+
+@media (max-width: 719px) {
+  .hero .quote cite {
+    padding-left: calc(0.724 * 18px);
+  }
 }

@@ -202,6 +202,16 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn("不在这里写缴费比例", self.html)
         self.assertNotIn("不在这里写供款比率", self.html)
 
+    def test_mobile_wrap_markup(self):
+        text = re.sub(r"<[^>]+>", "", self.html)
+        self.assertIn('<span class="seg">· 不推荐任何产品</span>', self.html)
+        self.assertIn("核心提取标到原书章节，历史数字标到 PDF 页码 · 不推荐任何产品", text)
+        self.assertIn('<span class="nw">敌人</span>', self.html)
+        self.assertIn("「投资者的最大问题甚至是最可怕的敌人，很可能就是他们自己。」", text)
+        self.assertIn(".quote .nw { white-space: nowrap; }", self.css)
+        self.assertIn("@media (max-width: 767px)", self.css)
+        self.assertIn("text-indent: -0.724em", self.css)
+
     def test_dead_selectors_are_gone(self):
         for token in (
             ".cards",
