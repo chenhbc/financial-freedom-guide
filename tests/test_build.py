@@ -163,7 +163,7 @@ class BuildTests(unittest.TestCase):
             self.html,
         )
         self.assertIn(
-            '<p class="meta colophon">页码指来源仓库 PDF 的文件页，含封面，不同纸书页码不会一一对应。</p>',
+            '<p class="meta colophon">页码为来源 PDF 的文件页（含封面），与纸书页码不一一对应。</p>',
             self.html,
         )
         self.assertNotIn("阅读时间约", self.html)
