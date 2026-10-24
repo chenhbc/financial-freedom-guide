@@ -7,9 +7,12 @@
 ## 本地预览
 
 ```bash
+python3 -m pip install -r requirements.txt
 python3 site/build.py
 python3 -m http.server 8765 -d public
 ```
+
+构建时用 fontTools 按页面实际用到的楷体字，从霞鹜文楷 v1.522 切出 woff2。来源和版本见 `site/fonts/SOURCE.md`。
 
 浏览器打开 `http://127.0.0.1:8765/`。
 
