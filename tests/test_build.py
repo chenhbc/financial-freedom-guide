@@ -163,7 +163,7 @@ class BuildTests(unittest.TestCase):
             self.html,
         )
         self.assertIn(
-            '<p class="meta colophon">页码为来源 PDF 的文件页（含封面），与纸书页码不一一对应。</p>',
+            '<p class="meta colophon">页码为来源 PDF 的文件页（含封面），<span class="nw">与纸书页码不一一对应。</span></p>',
             self.html,
         )
         self.assertNotIn("阅读时间约", self.html)
@@ -208,9 +208,17 @@ class BuildTests(unittest.TestCase):
         self.assertIn("核心提取标到原书章节，历史数字标到 PDF 页码 · 不推荐任何产品", text)
         self.assertIn('<span class="nw">敌人</span>', self.html)
         self.assertIn("「投资者的最大问题甚至是最可怕的敌人，很可能就是他们自己。」", text)
-        self.assertIn(".quote .nw { white-space: nowrap; }", self.css)
-        self.assertIn("@media (max-width: 767px)", self.css)
-        self.assertIn("text-indent: -0.724em", self.css)
+        self.assertIn(
+            '<cite>—— <span class="nw">格雷厄姆《聪明的投资者》导言「本书的目的」，</span><span class="nw">PDF 第 26 页</span></cite>',
+            self.html,
+        )
+        self.assertIn("—— 格雷厄姆《聪明的投资者》导言「本书的目的」，PDF 第 26 页", text)
+        self.assertIn("页码为来源 PDF 的文件页（含封面），与纸书页码不一一对应。", text)
+        self.assertIn(".quote .nw", self.css)
+        self.assertIn(".colophon .nw", self.css)
+        self.assertNotIn("text-indent", self.css)
+        self.assertNotIn("hanging-punctuation", self.css)
+        self.assertIn(".quote cite, .epigraph cite { display: block;", self.css)
 
     def test_dead_selectors_are_gone(self):
         for token in (

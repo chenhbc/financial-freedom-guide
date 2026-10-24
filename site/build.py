@@ -199,7 +199,7 @@ def layout(body: str) -> str:
 </header>
 <main id="main" class="wrap">
 {body}
-<p class="meta colophon">页码为来源 PDF 的文件页（含封面），与纸书页码不一一对应。</p>
+<p class="meta colophon">页码为来源 PDF 的文件页（含封面），<span class="nw">与纸书页码不一一对应。</span></p>
 </main>
 <footer class="site">
   <div class="wrap">
